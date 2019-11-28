@@ -1,5 +1,7 @@
 [deps]
 Gadfly = "c91e804a-d5a3-530f-b6f0-dfbca275c004"
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+MacroTools = "1914dd2f-81c6-5fcd-8719-6d5c9610ff09"
 
 [compat]
 julia = "1.2"
