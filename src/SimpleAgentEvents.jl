@@ -119,11 +119,10 @@ macro processes(sim, agent_decl, decl)
 
 	# bits between conditions and selection
 	push!(pois_func_body, :(rate = $(esc(:sum))(rates);
-#		println("@@ ", rate);
-#		w_time = rand(Exponential(1.0/rate));
-# copy ML3
-#		w_time = max(1e-5, log(1.0/rand())/rate);
-		w_time = log(rand())/-rate;
+		if rate == 0.0
+			return
+		end;
+		w_time = rand(Exponential(1.0/rate));
 		rnd = rand() * rate
 		))
 
