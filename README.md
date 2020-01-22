@@ -6,7 +6,7 @@ This is a very short introduction originally created for a stats course at South
 * `intro_abm_jl_2` adds a view things to the model to make it more interesting
 * `intro_abm_jl_3` shows how to generate data and display the results
  
-If you just want a preview without running the notebooks you can have a look at the generated previews:
+If you just want to take a look without running the notebooks, these are (non-interactive) generated previews:
 * [intro_jupyter_julia](intro_jupyter_julia.md)
 * [intro_abm_jl_1](intro_abm_jl_1.md)
 * [intro_abm_jl_2](intro_abm_jl_2)
