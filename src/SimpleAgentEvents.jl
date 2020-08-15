@@ -5,6 +5,7 @@ export @processes, Scheduler
 
 using MacroTools
 using Distributions
+using StaticArrays
 
 
 # TODO
@@ -14,14 +15,14 @@ using Distributions
 # in which module should rand. println, etc. be executed?
 
 
-macro processes(sim, agent_decl, decl)
+macro processes(model_name, sim, agent_decl, decl)
 	# some superficial sanity checks
 	if ! isexpr(agent_decl, Symbol("::"))
-		error("processes expects an agent declaration as 2nd argument")
+		error("@processes expects an agent declaration as 3rd argument")
 	end
 
 	if typeof(decl) != Expr || decl.head != :block
-		error("processes expects a declaration block as 3rd argument")
+		error("@processes expects a declaration block as 4th argument")
 	end
 
 	agent_name = agent_decl.args[1]
@@ -59,13 +60,13 @@ macro processes(sim, agent_decl, decl)
 	end
 
 
-	# name functions by type so that objects of different type
+	# name functions by model so that different models on the same type
 	# can be used in parallel
-	pois_func_name = :process_poisson
+	pois_func_name = Symbol("process_poisson_" * String(model_name))
 
 	# general bits of the function body
 	pois_func = :(function $(esc(pois_func_name))($(esc(agent_decl)), $(esc(:sim)))
-			rates = fill(0.0, $(length(pois)))
+			rates = zeros(MVector{$(length(pois))})
 		end)
 	
 	pois_func_body = pois_func.args[2].args
@@ -134,13 +135,17 @@ macro processes(sim, agent_decl, decl)
 
 	# the entire bunch of code
 	ret = Expr(:block)
+
+	push!(ret.args, pois_func)
+
+	# push spawn second, nice for interactive use as it shows the function
+	# name as output from the macro call
+	spawn_func_name = Symbol("spawn_" * String(model_name))
 	# and we also need a function to get an agent started
-	push!(ret.args, :(function $(esc(:spawn))(agent::$(esc(agent_type)), sim)
+	push!(ret.args, :(function $(esc(spawn_func_name))(agent::$(esc(agent_type)), sim)
 			$(esc(pois_func_name))(agent, sim)
 		end
 		))
-
-	push!(ret.args, pois_func)
 
 	ret
 end

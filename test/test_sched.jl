@@ -1,7 +1,7 @@
 push!(LOAD_PATH, "./src")
 
-using Scheduler
-using AgentEvents
+using SimpleAgentEvents
+using SimpleAgentEvents.Scheduler
 
 
 mutable struct Model
@@ -31,42 +31,42 @@ function wakeup(a::A1, model)
 #	println("$(a.id): wake up")
 	a.state = 1
 
-	a
+	[a]
 end
 
 function sleep(a::A1, model)
 #	println("$(a.id): sleep")
 	a.food -= 1
 
-	a
+	[a]
 end
 
 function walk(a::A1, model)
 #	println("$(a.id): walk")
 	a.food -= 1
 
-	a
+	[a]
 end
 
 function forage(a::A1, model)
 #	println("$(a.id): forage")
 	a.food += rand(1:5)
 
-	a
+	[a]
 end
 
 function fallasleep(a::A1, model)
 #	println("$(a.id): go to bed")
 	a.state = 0
 
-	a
+	[a]
 end
 
 
 const sim = Simulation(PQScheduler{Float64}(), Model())
 
 
-@processes sim self::A1 begin
+@processes SimpleTest sim self::A1 begin
 	# wake up
 	@poisson(2.0)	~ self.state == 0					=> wakeup(self, sim.model)
 	@poisson(1.0)	~ self.state == 0					=> sleep(self, sim.model)
@@ -77,7 +77,7 @@ end
 
 function setup(n)
 	for i in 1:n
-		spawn(A1(i), sim)
+		spawn_SimpleTest(A1(i), sim)
 	end
 end
 
@@ -85,7 +85,7 @@ function run(n)
 	for i in 1:n
 		next!(sim.scheduler)
 	end
-		println(time_next(sim.scheduler))
+	println(time_next(sim.scheduler))
 end
 
 

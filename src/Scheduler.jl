@@ -45,7 +45,7 @@ end
 
 
 "run the next action"
-function once!(scheduler)
+function next!(scheduler)
 #	println("! ", scheduler.now)
 
 	if isempty(scheduler)
@@ -61,7 +61,7 @@ function once!(scheduler)
 	fun(obj)
 end
 
-# we could implement this using repeated calls to once but that
+# we could implement this using repeated calls to next but that
 # would require redundant calls to peek
 "run actions up to `time`"
 function upto!(scheduler, atime)
