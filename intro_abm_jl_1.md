@@ -1,4 +1,3 @@
-
 # Introduction
 
 We are going to implement a very simple agent-based model of disease spread (an SI - susceptible-infected model) with some basic visualisation.
@@ -18,10 +17,6 @@ include("SimpleAgentEvents/src/SimpleAgentEvents.jl")
 using .SimpleAgentEvents
 using .SimpleAgentEvents.Scheduler
 ```
-
-    ┌ Info: Precompiling Luxor [ae8d54c2-7ccd-5906-9d76-62fc9837b5bc]
-    └ @ Base loading.jl:1242
-
 
 # Type declarations
 
@@ -190,15 +185,15 @@ for t in  1:10
 end
 ```
 
-    1.0, 1, 2499
+    1.0, 3, 2497
     2.0, 4, 2496
-    3.0, 10, 2490
-    4.0, 17, 2483
-    5.0, 22, 2478
-    6.0, 33, 2467
-    7.0, 48, 2452
-    8.0, 57, 2443
-    9.0, 68, 2432
+    3.0, 5, 2495
+    4.0, 12, 2488
+    5.0, 16, 2484
+    6.0, 23, 2477
+    7.0, 29, 2471
+    8.0, 45, 2455
+    9.0, 64, 2436
     10.0, 79, 2421
 
 
@@ -267,7 +262,10 @@ end
 ```
 
 
+
+
 ![svg](intro_abm_jl_1_files/intro_abm_jl_1_21_0.svg)
+
 
 
 # Things to try

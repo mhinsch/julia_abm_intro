@@ -1,4 +1,3 @@
-
 # Introduction
 
 In this part we will look at a few extensions of the model and the effect of different world topologies.
@@ -145,16 +144,16 @@ for t in  1:10
 end
 ```
 
-    1.0, 1, 2498
-    2.0, 2, 2497
-    3.0, 6, 2490
-    4.0, 9, 2486
-    5.0, 12, 2482
-    6.0, 21, 2469
-    7.0, 33, 2454
-    8.0, 37, 2445
-    9.0, 59, 2416
-    10.0, 67, 2398
+    1.0, 0, 2499
+    2.0, 4, 2495
+    3.0, 6, 2491
+    4.0, 9, 2488
+    5.0, 10, 2483
+    6.0, 13, 2477
+    7.0, 12, 2474
+    8.0, 13, 2470
+    9.0, 17, 2459
+    10.0, 26, 2448
 
 
 For convenience I have put the visualisation code into a function.
@@ -165,7 +164,10 @@ draw_sim(sim)
 ```
 
 
+
+
 ![svg](intro_abm_jl_2_files/intro_abm_jl_2_14_0.svg)
+
 
 
 # Extension 2 - mortality
@@ -239,16 +241,16 @@ end
 
 ```
 
-    1.0, 3, 2497
-    2.0, 3, 2496
-    3.0, 8, 2487
-    4.0, 12, 2481
-    5.0, 13, 2477
-    6.0, 13, 2472
-    7.0, 17, 2459
-    8.0, 19, 2453
-    9.0, 21, 2445
-    10.0, 24, 2436
+    1.0, 1, 2498
+    2.0, 4, 2493
+    3.0, 1, 2492
+    4.0, 6, 2483
+    5.0, 9, 2477
+    6.0, 10, 2472
+    7.0, 14, 2463
+    8.0, 14, 2457
+    9.0, 16, 2450
+    10.0, 18, 2443
 
 
 
@@ -257,7 +259,10 @@ draw_sim(sim_m)
 ```
 
 
+
+
 ![svg](intro_abm_jl_2_files/intro_abm_jl_2_20_0.svg)
+
 
 
 # Extension 3 - topology
@@ -272,8 +277,8 @@ with number of nodes `n`, threshold to connect nodes `near` (don't set this much
 
 
 ```julia
-sim_m2 = Simulation(0.5, 0.1, 0.2, 0.1)
-sim_m2.pop = setup_geograph(2500, 0.03, 100)
+sim_m2 = Simulation(0.2, 0.01, 0.06, 0.00143)
+sim_m2.pop = setup_geograph(2500, 0.025, 50)
 sim_m2.pop[1].status = infected
 
 for person in sim_m2.pop
@@ -285,7 +290,7 @@ Random.seed!(42);
 
 
 ```julia
-for t in  1:10
+for t in  1:7
     upto!(sim_m2.scheduler, time_now(sim_m2.scheduler) + 1.0)
     println(time_now(sim_m2.scheduler), ", ", 
         count(p -> p.status == infected, sim_m.pop), ", ",
@@ -294,16 +299,13 @@ end
 
 ```
 
-    1.0, 24, 2436
-    2.0, 24, 2436
-    3.0, 24, 2436
-    4.0, 24, 2436
-    5.0, 24, 2436
-    6.0, 24, 2436
-    7.0, 24, 2436
-    8.0, 24, 2436
-    9.0, 24, 2436
-    10.0, 24, 2436
+    1.0, 18, 2443
+    2.0, 18, 2443
+    3.0, 18, 2443
+    4.0, 18, 2443
+    5.0, 18, 2443
+    6.0, 18, 2443
+    7.0, 18, 2443
 
 
 
@@ -312,7 +314,10 @@ draw_sim(sim_m2)
 ```
 
 
+
+
 ![svg](intro_abm_jl_2_files/intro_abm_jl_2_25_0.svg)
+
 
 
 # Things to try
