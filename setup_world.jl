@@ -1,28 +1,27 @@
+function setup_grid(constr, xs, ys)
+	# construct the population (contactless for now)
+	pop = [ constr(i÷ys+1, i%ys+1) for i in 0:xs*ys-1 ]
 
-function setup_grid(xs, ys)
-	pop = [ Person(x, y) for y=1:ys, x=1:xs ]
-
-	ret = Person[]
+	# make a matrix to simplify finding neighbours
+	matrix = reshape(pop, ys, :)
 
 	for x in 1:xs, y in 1:ys
-		p = pop[y, x]
+		p = matrix[y, x]
 		if x > 1
-			push!(p.contacts, pop[y, x-1])
+			push!(p.contacts, matrix[y, x-1])
 		end
 		if y > 1
-			push!(p.contacts, pop[y-1, x])
+			push!(p.contacts, matrix[y-1, x])
 		end
 		if x < xs
-			push!(p.contacts, pop[y, x+1])
+			push!(p.contacts, matrix[y, x+1])
 		end
 		if y < ys
-			push!(p.contacts, pop[y+1, x])
+			push!(p.contacts, matrix[y+1, x])
 		end
-
-		push!(ret, p)
 	end
 
-	ret
+	pop
 end
 
 
@@ -48,10 +47,10 @@ function create_random_geo_graph(nnodes :: Int64, thresh :: Float64)
 end
 
 
-function setup_geograph(n = 2500, thresh = 0.05, rand_cont = 0)
+function setup_geograph(constr, n = 2500, thresh = 0.05, rand_cont = 0)
 	nodes, links = create_random_geo_graph(n, thresh)
 
-	pop = [Person(x, y) for (x, y) in nodes]
+	pop = [constr(x, y) for (x, y) in nodes]
 
 	for (p1, p2) in links
 		push!(pop[p1].contacts, pop[p2])
